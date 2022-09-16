@@ -11,10 +11,21 @@
     "@chakra-ui/theme-tools": "^2.0.2",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.9.0",
+    "@prisma/client": "4.3.1",
+    "@tanstack/react-query": "^4.3.4",
+    "@trpc/client": "^10.0.0-proxy-alpha.76",
+    "@trpc/next": "^10.0.0-proxy-alpha.76",
+    "@trpc/react": "^10.0.0-proxy-alpha.76",
+    "@trpc/server": "^10.0.0-proxy-alpha.76",
+    "formik": "^2.2.9",
     "framer-motion": "^6.3.0",
     "next": "latest",
+    "prisma": "^4.3.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "superjson": "^1.10.0",
+    "zod": "^3.19.1",
+    "zod-formik-adapter": "^1.1.1"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
