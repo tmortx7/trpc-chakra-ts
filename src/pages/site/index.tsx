@@ -16,8 +16,10 @@ import {
   Box,
   Flex,
   IconButton,
+  LinkOverlay,
+  LinkBox,
 } from "@chakra-ui/react";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
 const SiteListPage: NextPage = () => {
    const utils = trpc.useContext();
@@ -67,7 +69,15 @@ const SiteListPage: NextPage = () => {
                       <Td>{role}</Td>
                       <Td>{description}</Td>
                       <Td>
-                        <Link href={`/site/edit/${id}`} >edit</Link>
+                        <LinkBox>
+                          <LinkOverlay href={`/site/edit/${id}`} >
+                            <IconButton
+                              aria-label='Delete Site'
+                              size='sm'
+                              icon={<EditIcon/>}
+                            />
+                          </LinkOverlay>
+                        </LinkBox>
                       </Td>
                       <Td>
                         <IconButton
