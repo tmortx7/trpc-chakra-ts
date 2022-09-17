@@ -15,12 +15,25 @@ import {
   TableContainer,
   Box,
   Flex,
+  IconButton,
 } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const SiteListPage: NextPage = () => {
+   const utils = trpc.useContext();
+  const mutation = trpc.site.delete.useMutation({
+    async onSuccess() {
+      await utils.site.list.invalidate();
+    }
+  });
   const { data, isLoading } = trpc.site.list.useQuery();
   if (isLoading) {
     return <p> Loading...</p>;
+  }
+
+  function deleteSite(value:any) {
+    alert(value)
+    mutation.mutate(value);
   }
 
   return (
@@ -40,7 +53,8 @@ const SiteListPage: NextPage = () => {
                     <Th>Site</Th>
                     <Th>Alias</Th>
                     <Th>Description</Th>
-                    <Th>edit</Th>
+                    <Th>Edit</Th>
+                    <Th>Delete</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -51,6 +65,14 @@ const SiteListPage: NextPage = () => {
                       <Td>{description}</Td>
                       <Td>
                         <Link href={`/site/edit/${id}`}>edit</Link>
+                      </Td>
+                      <Td>
+                        <IconButton
+                          aria-label='Delete Site'
+                          size='sm'
+                          icon={<DeleteIcon />}
+                          onClick={() => mutation.mutate({ id })}
+                        />
                       </Td>
                     </Tr>
                   ))}

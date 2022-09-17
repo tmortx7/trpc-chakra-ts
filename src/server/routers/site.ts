@@ -63,4 +63,15 @@ export const siteRouter = t.router({
       });
       return site;
     }),
+  delete: t.procedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({input})=> {
+      return await prisma.site.delete({
+        where: { id: input.id },
+      });
+    })
 });
