@@ -22,22 +22,16 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
 const SiteListPage: NextPage = () => {
-   const utils = trpc.useContext();
+  const utils = trpc.useContext();
   const mutation = trpc.site.delete.useMutation({
     async onSuccess() {
       await utils.site.list.invalidate();
-    }
+    },
   });
   const { data, isLoading } = trpc.site.list.useQuery();
   if (isLoading) {
     return <p> Loading...</p>;
   }
-
-  function deleteSite(value:any) {
-    alert(value)
-    mutation.mutate(value);
-  }
-
 
   return (
     <div>
@@ -50,7 +44,7 @@ const SiteListPage: NextPage = () => {
         <Flex bg="gray.100" align="center" justify="center" h="100vh">
           <Box>
             <TableContainer>
-              <Table variant='striped' colorScheme='gray 300'>
+              <Table variant="striped" colorScheme="gray 300">
                 <Thead>
                   <Tr>
                     <Th>Site</Th>
@@ -70,19 +64,19 @@ const SiteListPage: NextPage = () => {
                       <Td>{description}</Td>
                       <Td>
                         <LinkBox>
-                          <LinkOverlay href={`/site/edit/${id}`} >
+                          <LinkOverlay href={`/site/edit/${id}`}>
                             <IconButton
-                              aria-label='Delete Site'
-                              size='sm'
-                              icon={<EditIcon/>}
+                              aria-label="Delete Site"
+                              size="sm"
+                              icon={<EditIcon />}
                             />
                           </LinkOverlay>
                         </LinkBox>
                       </Td>
                       <Td>
                         <IconButton
-                          aria-label='Delete Site'
-                          size='sm'
+                          aria-label="Delete Site"
+                          size="sm"
                           icon={<DeleteIcon />}
                           onClick={() => mutation.mutate({ id })}
                         />
