@@ -1,5 +1,5 @@
 import { Box, Flex, Stack } from "@chakra-ui/react";
-import { InputControl, SubmitButton } from "../../../components";
+import { InputControl, SelectControl, SubmitButton } from "../../../components";
 import { NextPage } from "next";
 import { Formik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
@@ -10,6 +10,7 @@ import { trpc } from "../../../utils/trpc";
 const initialValues = {
   site: "",
   alias: "",
+  role: "sanitary",
   description: "",
 };
 
@@ -53,6 +54,17 @@ const CreateSitePage: NextPage = () => {
                 label="Alias"
                 inputProps={{ autoComplete: "off" }}
               />
+              <SelectControl
+                label="Select label"
+                name="role"
+                selectProps={{ placeholder: 'Select option' }}
+              >
+                <option value="storm">storm</option>
+                <option value="sanitary">sanitary</option>
+                <option value="field">field</option>
+                <option value="other">Other</option>
+                <option disabled value="">(Select a Role)</option>
+              </SelectControl>
               <InputControl
                 name="description"
                 label="Description"

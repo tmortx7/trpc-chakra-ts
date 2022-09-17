@@ -53,16 +53,18 @@ const SiteListPage: NextPage = () => {
                   <Tr>
                     <Th>Site</Th>
                     <Th>Alias</Th>
+                    <Th>Role</Th>
                     <Th>Description</Th>
                     <Th>Edit</Th>
                     <Th>Delete</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data?.map(({ id, site, alias, description }) => (
+                  {data?.map(({ id, site, alias, role, description }) => (
                     <Tr key={id}>
                       <Td>{site}</Td>
                       <Td>{alias}</Td>
+                      <Td>{role}</Td>
                       <Td>{description}</Td>
                       <Td>
                         <Link href={`/site/edit/${id}`} >edit</Link>

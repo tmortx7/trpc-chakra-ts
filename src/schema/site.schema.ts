@@ -1,8 +1,10 @@
 import { z } from "zod";
 
+
 export const SiteSchema = z.object({
   site: z.string().min(1),
   alias: z.string().min(1),
+  role: z.enum(["sanitary", "storm", "field","other"]),
   description: z.string(),
 })
 
@@ -10,6 +12,7 @@ export const EditSiteSchema = z.object({
   id: z.string().uuid(),
   site: z.string().min(1),
   alias: z.string().min(1),
+  role: z.enum(["sanitary", "storm", "field","other"]),
   description: z.string(),
 })
 

@@ -10,6 +10,7 @@ const defaultSiteSelect = Prisma.validator<Prisma.SiteSelect>()({
   id: true,
   site: true,
   alias: true,
+  role: true,
   description: true,
   createdAt: true,
   updatedAt: true,
@@ -64,6 +65,7 @@ export const siteRouter = t.router({
           id: input.id,
           site: input.site,
           alias: input.alias,
+          role: input.role,
           description: input.description,
         },
       });
