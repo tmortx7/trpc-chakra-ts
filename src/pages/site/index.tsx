@@ -36,6 +36,7 @@ const SiteListPage: NextPage = () => {
     mutation.mutate(value);
   }
 
+
   return (
     <div>
       <Head>
@@ -64,7 +65,7 @@ const SiteListPage: NextPage = () => {
                       <Td>{alias}</Td>
                       <Td>{description}</Td>
                       <Td>
-                        <Link href={`/site/edit/${id}`}>edit</Link>
+                        <Link href={`/site/edit/${id}`} >edit</Link>
                       </Td>
                       <Td>
                         <IconButton

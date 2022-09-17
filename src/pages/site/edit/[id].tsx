@@ -7,14 +7,42 @@ import router, { useRouter } from "next/router";
 import NextError from 'next/error';
 import { IEditSite, SiteSchema } from "../../../schema/site.schema";
 import { trpc } from "../../../utils/trpc";
+import React from "react";
+import superjson from 'superjson';
+import { createProxySSGHelpers } from '@trpc/react/ssg';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { appRouter } from "../../../server/routers/_app";
 
-const EditSitePage: NextPage = () => {
+export async function getServerSideProps(
+  context: GetServerSidePropsContext<{ id: string }>,
+) {
+  const ssg = createProxySSGHelpers({
+    router: appRouter,
+    ctx: {},
+    transformer: superjson,
+  });
+  const id = context.params?.id as string;
+  // Prefetch `post.byId`
+  await ssg.site.byId.fetch({ id });
+  // Make sure to return { props: { trpcState: ssg.dehydrate() } }
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+      id,
+    },
+  };
+}
+
+const EditSitePage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const utils = trpc.useContext();
   const mutation = trpc.site.edit.useMutation({
     async onSuccess() {
       await utils.site.list.invalidate();
     }
   });
+
+
+
   const id = useRouter().query.id as string;
   const siteQuery = trpc.site.byId.useQuery({ id });
 
