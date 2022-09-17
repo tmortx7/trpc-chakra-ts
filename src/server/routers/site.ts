@@ -56,12 +56,17 @@ export const siteRouter = t.router({
   edit: t.procedure
     .input(EditSiteSchema)
     .mutation(async ({ input }) => {
-      const site = await prisma.site.update({
-        where: { id: input.id },
-        data: input,
-        select: defaultSiteSelect,
+      return await prisma.site.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          id: input.id,
+          site: input.site,
+          alias: input.alias,
+          description: input.description,
+        },
       });
-      return site;
     }),
   delete: t.procedure
     .input(
