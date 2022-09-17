@@ -1,7 +1,8 @@
+import { inputAdornmentClasses } from "@mui/material";
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { SiteSchema } from "../../schema/site.schema";
+import { EditSiteSchema, SiteSchema } from "../../schema/site.schema";
 import { prisma } from "../prisma";
 import { t } from "../trpc";
 
@@ -45,10 +46,18 @@ export const siteRouter = t.router({
       }
       return site;
     }),
-  add: t.procedure
-    .input(SiteSchema)
+  add: t.procedure.input(SiteSchema).mutation(async ({ input }) => {
+    const site = await prisma.site.create({
+      data: input,
+      select: defaultSiteSelect,
+    });
+    return site;
+  }),
+  edit: t.procedure
+    .input(EditSiteSchema)
     .mutation(async ({ input }) => {
-      const site = await prisma.site.create({
+      const site = await prisma.site.update({
+        where: { id: input.id },
         data: input,
         select: defaultSiteSelect,
       });

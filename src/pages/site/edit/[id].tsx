@@ -3,19 +3,34 @@ import { InputControl, SubmitButton } from "../../../components";
 import { NextPage } from "next";
 import { Formik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
-import { useRouter } from "next/router";
-import { ISite, SiteSchema } from "../../../schema/site.schema";
+import router, { useRouter } from "next/router";
+import NextError from 'next/error';
+import { IEditSite, SiteSchema } from "../../../schema/site.schema";
 import { trpc } from "../../../utils/trpc";
 
-const initialValues = {
-  site: "",
-  alias: "",
-  description: "",
-};
+const EditSitePage: NextPage = () => {
+  const utils = trpc.useContext();
+  const mutation = trpc.site.edit.useMutation({
+    async onSuccess() {
+      await utils.site.list.invalidate();
+    }
+  });
+  const id = useRouter().query.id as string;
+  const siteQuery = trpc.site.byId.useQuery({ id });
 
-const CreateSitePage: NextPage = () => {
-  const router = useRouter();
-  const mutation = trpc.site.add.useMutation();
+  if (siteQuery.error) {
+    return (
+      <NextError
+        title={siteQuery.error.message}
+        statusCode={siteQuery.error.data?.httpStatus ?? 500}
+      />
+    );
+  }
+
+  if (siteQuery.status !== 'success') {
+    return <>Loading...</>;
+  }
+  const { data } = siteQuery;
 
   return (
     <div>
@@ -23,10 +38,14 @@ const CreateSitePage: NextPage = () => {
         <Box bg="white" p={6} rounded="md">
           Create Site
         <Formik
-          initialValues={initialValues}
-          onSubmit={async(values: ISite) => {
+          initialValues={{
+            id: data.id,
+            site: data.site,
+            alias: data.alias,
+            description: data.description,
+          }}
+          onSubmit={async(values: IEditSite) => {
             mutation.mutate(values);
-            console.log(values)
             router.push("/site");
           }}
           validationSchema={toFormikValidationSchema(SiteSchema)}
@@ -68,4 +87,4 @@ const CreateSitePage: NextPage = () => {
   );
 };
 
-export default CreateSitePage;
+export default EditSitePage;
