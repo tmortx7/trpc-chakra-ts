@@ -49,7 +49,12 @@ export const siteRouter = t.router({
     }),
   add: t.procedure.input(SiteSchema).mutation(async ({ input }) => {
     const site = await prisma.site.create({
-      data: input,
+      data: {
+          site: input.site.toLowerCase(),
+          alias: input.alias.toLowerCase(),
+          role: input.role,
+          description: input.description.toLowerCase(),
+        },
       select: defaultSiteSelect,
     });
     return site;
@@ -63,10 +68,10 @@ export const siteRouter = t.router({
         },
         data: {
           id: input.id,
-          site: input.site,
-          alias: input.alias,
+          site: input.site.toLowerCase(),
+          alias: input.alias.toLowerCase(),
           role: input.role,
-          description: input.description,
+          description: input.description.toLowerCase(),
         },
       });
     }),

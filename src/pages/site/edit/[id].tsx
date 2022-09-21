@@ -50,7 +50,7 @@ const EditSitePage = (
               id: data.id,
               site: data.site,
               alias: data.alias,
-              role: data.role,
+              role: data.role!,
               description: data.description,
             }}
             onSubmit={async (values: IEditSite) => {
@@ -96,7 +96,7 @@ const EditSitePage = (
                   label="Description"
                   inputProps={{ autoComplete: "off" }}
                 />
-                <SubmitButton>Submit</SubmitButton>
+                <SubmitButton colorScheme={'blue'}>Submit</SubmitButton>
               </Stack>
             )}
           </Formik>
